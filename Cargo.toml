@@ -1,0 +1,23 @@
+[package]
+name = "hardware-qoute"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+attester = { git = "https://github.com/confidential-containers/guest-components", package = "attester", default-features = false, features = ["snp-attester", "az-snp-vtpm-attester", "tpm-attester"] }
+env_logger = "0.11"
+anyhow = "1"
+tokio = { version = "1", features = ["full"] }
+serde_json = "1"
+async-trait = "0.1"
+base64 = "0.22.1"
+serde = "1.0.228"
+az-snp-vtpm = "0.7.4"
+hex = "0.4.3"
+kbs-types = "0.14"
+verifier = { git = "https://github.com/iroykaufman/trustee", branch = "feat/expose_modules", package = "verifier", default-features = false, features = ["az-snp-vtpm-verifier"] }
+az-tdx-vtpm = { version = "0.7.4", optional = true }
+
+[features]
+default = ["az-tdx-vtpm"]
+az-tdx-vtpm = ["dep:az-tdx-vtpm", "attester/az-tdx-vtpm-attester", "attester/tdx-attester", "verifier/tdx-verifier"]
