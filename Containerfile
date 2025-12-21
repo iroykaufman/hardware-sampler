@@ -61,10 +61,10 @@ RUN dnf install -y \
     ldconfig
 
 # Copy the binary from builder
-COPY --from=builder /app/target/release/hardware-sampler /app/hardware-sampler
+COPY --from=builder /app/target/release/tee-sampler /app/tee-sampler
 
 # Make the binary executable
-RUN chmod +x /app/hardware-sampler
+RUN chmod +x /app/tee-sampler
 
 # Set the binary as the entrypoint
-ENTRYPOINT ["/app/hardware-sampler"]
+ENTRYPOINT ["/app/tee-sampler"]

@@ -36,13 +36,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Container builder stage
-        run: docker build -f Containerfile --target builder -t hardware-sampler-builder:latest .
+        run: docker build -f Containerfile --target builder -t tee-sampler-builder:latest .
 
       - name: Run Clippy
         run: |
           docker run --rm \
             -v "$PWD:/app" \
             -w /app \
-            hardware-sampler-builder:latest \
+            tee-sampler-builder:latest \
             bash -c "rustup component add clippy && cargo clippy -- -D warnings"
 

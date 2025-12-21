@@ -4,13 +4,13 @@ SPDX-FileCopyrightText: 2025 Roy Kaufman <rkaufman@redhat.com>
 SPDX-License-Identifier: MIT
 -->
 
-# hardware-sampler
+# TEE Sampler
 
 A tool for detecting and sampling hardware attestation evidence from various Trusted Execution Environment (TEE) types.
 
 ## Overview
 
-`hardware-sampler` automatically detects available attestable hardware devices and collects attestation evidence from them. It supports multiple TEE types and formats the evidence as structured claims in the same format as [Trustee](https://github.com/confidential-containers/trustee).
+`tee-sampler` automatically detects available attestable hardware devices and collects attestation evidence from them. It supports multiple TEE types and formats the evidence as structured claims in the same format as [Trustee](https://github.com/confidential-containers/trustee).
 
 ## Supported TEE Types
 
@@ -27,7 +27,7 @@ A tool for detecting and sampling hardware attestation evidence from various Tru
 
 ## Usage
 
-just run `sudo podman run --privileged quay.io/rkaufman/hardware-sampler`
+just run `sudo podman run --privileged ghcr.io/trusted-execution-clusters/tee-sampler`
 
 
 ## Output

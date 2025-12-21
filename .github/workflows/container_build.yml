@@ -2,10 +2,10 @@
 #
 # SPDX-License-Identifier: CC0-1.0
 
-name: "Build and push hardware-sampler container image"
+name: "Build and push tee-sampler container image"
 
 env:
-  NAME: "hardware-sampler"
+  NAME: "tee-sampler"
   REGISTRY: "ghcr.io/${{ github.repository_owner }}"
 
 on:
@@ -26,13 +26,13 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  build-hardware-sampler-image:
+  build-tee-sampler-image:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build hardware-sampler image
+      - name: Build tee-sampler image
         id: build-image
         uses: redhat-actions/buildah-build@v2
         with:
@@ -45,7 +45,7 @@ jobs:
 
       - name: Push to Container Registry
         uses: redhat-actions/push-to-registry@v2
-        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' && github.repository_owner == 'iroykaufman'
+        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' && github.repository_owner == 'trusted-execution-clusters'
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}

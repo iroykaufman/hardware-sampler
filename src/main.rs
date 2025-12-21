@@ -82,15 +82,17 @@ async fn main() {
         .expect("get evidence failed");
 
     print_claim(evidence_value, tee_type).await;
-    for tee in detect_attestable_devices() {
-        let attester =
-            TryInto::<BoxedAttester>::try_into(tee).expect("Failed to initialize device attester");
+    if tee_type != Tee::AzSnpVtpm && tee_type != Tee::AzTdxVtpm {
+        for tee in detect_attestable_devices() {
+            let attester = TryInto::<BoxedAttester>::try_into(tee)
+                .expect("Failed to initialize device attester");
 
-        let evidence_value = attester
-            .get_evidence(report_data.clone())
-            .await
-            .expect("get additional evidence failed");
+            let evidence_value = attester
+                .get_evidence(report_data.clone())
+                .await
+                .expect("get additional evidence failed");
 
-        print_claim(evidence_value, tee).await;
+            print_claim(evidence_value, tee).await;
+        }
     }
 }
