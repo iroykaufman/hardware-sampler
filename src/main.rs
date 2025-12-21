@@ -75,7 +75,7 @@ async fn main() {
     // report_data on all platforms is 32 bytes length.
     let report_data = vec![0u8; 32];
     let tee_type = detect_tee_type();
-    let evidence_value = TryInto::<BoxedAttester>::try_into(tee_type.clone())
+    let evidence_value = TryInto::<BoxedAttester>::try_into(tee_type)
         .expect("Failed to initialize attester.")
         .get_evidence(report_data.clone())
         .await
