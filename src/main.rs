@@ -1,21 +1,25 @@
+// SPDX-FileCopyrightText: 2025 Roy Kaufman <rkaufman@redhat.com>
+//
+// SPDX-License-Identifier: MIT
+
 use attester::{detect_attestable_devices, detect_tee_type, BoxedAttester};
-use verifier::az_snp_vtpm::{parse_tee_evidence_az, extend_claim};
-use az_snp_vtpm::vtpm;
-use kbs_types::Tee;
 use az_snp_vtpm::hcl;
-use serde_json::Value;
-use verifier::snp::{SnpEvidence, parse_tee_evidence};
+use az_snp_vtpm::vtpm;
+#[cfg(feature = "az-tdx-vtpm")]
+use az_tdx_vtpm::vtpm::Quote as TpmQuote;
+use kbs_types::Tee;
 use log::warn;
+use serde_json::Value;
+use verifier::az_snp_vtpm::{extend_claim, parse_tee_evidence_az};
 #[cfg(feature = "az-tdx-vtpm")]
 use verifier::intel_dcap::{ecdsa_quote_verification, extend_using_custom_claims};
+use verifier::snp::{parse_tee_evidence, SnpEvidence};
 #[cfg(feature = "az-tdx-vtpm")]
 use verifier::tdx::claims::generate_parsed_claim;
 #[cfg(feature = "az-tdx-vtpm")]
 use verifier::tdx::quote::parse_tdx_quote;
-#[cfg(feature = "az-tdx-vtpm")]
-use az_tdx_vtpm::vtpm::Quote as TpmQuote;
 
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 struct EvidenceAzSnpVtpm {
@@ -43,7 +47,7 @@ async fn print_claim(evidence_value: Value, tee_type: Tee) {
         }
 
         #[cfg(feature = "az-tdx-vtpm")]
-        Tee::AzTdxVtpm => { 
+        Tee::AzTdxVtpm => {
             let evidence = serde_json::from_value::<EvidenceAzTdxVtpm>(evidence_value).unwrap();
             // let hcl_report = hcl::HclReport::new(evidence.hcl_report).unwrap();
             let td_quote = parse_tdx_quote(&evidence.td_quote).unwrap();
@@ -56,9 +60,13 @@ async fn print_claim(evidence_value: Value, tee_type: Tee) {
             let evidence = serde_json::from_value::<SnpEvidence>(evidence_value).unwrap();
             claim = parse_tee_evidence(&evidence.attestation_report);
         }
-        _ => warn!("Unsupported tee type: {:?}", tee_type)
+        _ => warn!("Unsupported tee type: {:?}", tee_type),
     }
-    println!("{:?}:\n{}", tee_type, serde_json::to_string_pretty(&claim).expect("Failed to serialize claim"));
+    println!(
+        "{:?}:\n{}",
+        tee_type,
+        serde_json::to_string_pretty(&claim).expect("Failed to serialize claim")
+    );
 }
 
 #[tokio::main]
@@ -72,7 +80,7 @@ async fn main() {
         .get_evidence(report_data.clone())
         .await
         .expect("get evidence failed");
-    
+
     print_claim(evidence_value, tee_type).await;
     for tee in detect_attestable_devices() {
         let attester =

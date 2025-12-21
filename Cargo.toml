@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 Roy Kaufman <rkaufman@redhat.com>
+#
+# SPDX-License-Identifier: CC0-1.0
+
 [package]
 name = "hardware-sampler"
 version = "0.1.0"

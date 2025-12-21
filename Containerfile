@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 Roy Kaufman <rkaufman@redhat.com>
+#
+# SPDX-License-Identifier: CC0-1.0
+
 # rust:1.89.0-slim
 FROM --platform=${BUILDPLATFORM:-linux/amd64} \
     docker.io/library/rust@sha256:6c828d9865870a3bc8c02919d73803df22cac59b583d8f2cb30a296abe64748f \

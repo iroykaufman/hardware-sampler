@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2025 Roy Kaufman <rkaufman@redhat.com>
+
+SPDX-License-Identifier: MIT
+-->
+
 # hardware-sampler
 
 A tool for detecting and sampling hardware attestation evidence from various Trusted Execution Environment (TEE) types.
